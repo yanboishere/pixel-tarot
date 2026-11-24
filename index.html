@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>像素塔罗 · Pixel Tarot</title>
+  <meta name="description" content="像素风格的塔罗占卜：许愿、洗牌、切牌、抽牌，逐张解读，并穷举全部可能结果给出事件成真的概率。">
+  <link rel="preload" href="fonts/fusion-pixel-12px-zh_hans.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div class="stars" aria-hidden="true"></div>
+
+  <header class="top">
+    <h1 class="logo"><span class="logo-star">✦</span> 像素塔罗 <small>PIXEL TAROT</small></h1>
+  </header>
+
+  <main>
+    <!-- 1. 许愿 -->
+    <section id="s-wish" class="screen active">
+      <div class="panel">
+        <canvas class="hero-card" id="hero-card" aria-hidden="true"></canvas>
+        <h2>闭上眼睛，想着你的愿望</h2>
+        <p class="muted">把你想问的事写下来，越具体越好。也可以什么都不写，直接抽一次整体运势。</p>
+        <label for="wish" class="sr-only">你的愿望</label>
+        <textarea id="wish" maxlength="120" rows="3" placeholder="例如：这次面试能拿到 offer 吗？"></textarea>
+        <div class="row">
+          <button class="btn primary" id="btn-wish">许下愿望 ✦</button>
+          <button class="btn ghost" id="btn-skip">跳过，直接抽牌 →</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2. 选择牌阵 -->
+    <section id="s-spread" class="screen">
+      <div class="panel wide">
+        <p class="wish-echo" id="wish-echo"></p>
+        <h2>选择牌阵</h2>
+        <div class="spread-list" id="spread-list"></div>
+        <button class="btn ghost small" data-goto="s-wish">← 返回修改愿望</button>
+      </div>
+    </section>
+
+    <!-- 3. 洗牌 / 切牌 / 抽牌 -->
+    <section id="s-ritual" class="screen">
+      <div class="panel wide">
+        <p class="step-tag" id="ritual-step"></p>
+        <h2 id="ritual-title"></h2>
+        <p class="muted" id="ritual-tip"></p>
+
+        <div id="stage-shuffle" class="stage">
+          <div class="deck-pile" id="deck-pile"></div>
+          <div class="row">
+            <button class="btn" id="btn-shuffle">洗牌</button>
+            <button class="btn primary" id="btn-to-cut" disabled>洗好了，去切牌 →</button>
+          </div>
+        </div>
+
+        <div id="stage-cut" class="stage">
+          <div class="cut-piles" id="cut-piles"></div>
+        </div>
+
+        <div id="stage-pick" class="stage">
+          <div class="slots" id="pick-slots"></div>
+          <div class="fan" id="fan"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4. 解读 -->
+    <section id="s-reading" class="screen">
+      <div class="panel wide">
+        <p class="wish-echo" id="reading-wish"></p>
+        <h2 id="reading-title"></h2>
+        <p class="muted" id="reading-tip">点击每张牌将它翻开</p>
+        <div class="spread-board" id="board"></div>
+        <div class="row"><button class="btn" id="btn-flip-all">全部翻开</button></div>
+
+        <div id="result" class="result" hidden>
+          <div class="prob-card">
+            <p class="prob-label" id="prob-label"></p>
+            <p class="prob-value" id="prob-value"></p>
+            <div class="meter" aria-hidden="true"><div class="meter-fill" id="meter-fill"></div></div>
+            <p class="verdict" id="verdict"></p>
+          </div>
+
+          <h3>逐张解读</h3>
+          <ol class="readings" id="readings"></ol>
+
+          <h3>综合解读</h3>
+          <div class="summary" id="summary"></div>
+
+          <h3>穷举全部可能性</h3>
+          <div class="stats" id="stats"></div>
+          <figure class="histo-wrap">
+            <figcaption>全部可能结果的得分分布（柱高 = 该得分的结果占比，金色 = 本次）</figcaption>
+            <div class="histo" id="histo" role="img"></div>
+            <div class="histo-axis"><span id="axis-min"></span><span>得分</span><span id="axis-max"></span></div>
+          </figure>
+          <details class="method">
+            <summary>概率是怎么算出来的？</summary>
+            <div id="method"></div>
+          </details>
+
+          <div class="row">
+            <button class="btn primary" id="btn-again">同一个愿望，再抽一次</button>
+            <button class="btn ghost" id="btn-restart">重新许愿</button>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="foot">
+    塔罗只是一面镜子，概率来自牌面的符号模型，仅供娱乐与自我觉察 ✦ 字体：<a href="https://github.com/TakWolf/fusion-pixel-font" target="_blank" rel="noopener">缝合像素</a>（OFL）
+  </footer>
+
+  <script src="js/cards.js"></script>
+  <script src="js/sprites.js"></script>
+  <script src="js/probability.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
